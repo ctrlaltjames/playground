@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Gradient</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a14;
+            --bg-light: #f4f6f9;
+            --gradient: linear-gradient(90deg, #00c6ff, #8a2be2);
+            --glow-dark: drop-shadow(0 0 20px rgba(138, 43, 226, 0.4));
+            --glow-light: drop-shadow(0 0 15px rgba(0, 82, 212, 0.5));
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-dark);
+            transition: background-color 0.4s ease;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gradient-text {
+            font-size: clamp(2.5rem, 10vw, 8rem);
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: var(--glow-dark);
+            transition: filter 0.4s ease;
+            user-select: none;
+            animation: fadeIn 1.5s ease-out;
+            padding: 1rem;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .text-wrapper {
+            padding: 2rem;
+            background-color: transparent;
+            border-radius: 24px;
+            margin: 1rem;
+            display: inline-block;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow: visible;
+        }
+
+
+        @media (max-width: 768px) {
+            .text-wrapper {
+                padding: 1.5rem;
+                margin: 0.75rem;
+                border-radius: 16px;
+                min-width: 180px;
+                max-width: 95vw;
+                max-height: 75vh;
+            }
+
+            .gradient-text {
+                font-size: clamp(2rem, 9vw, 4rem);
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .text-wrapper {
+                padding: 1rem;
+                margin: 0.5rem;
+                border-radius: 12px;
+                min-width: 140px;
+                max-width: 95vw;
+                max-height: 70vh;
+            }
+
+            .gradient-text {
+                font-size: clamp(1.5rem, 8vw, 3rem);
+                padding: 0.5rem;
+            }
+
+            .hint {
+                font-size: 0.8rem;
+                margin-top: 1rem;
+                padding: 0 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-height: 500px) {
+            .text-wrapper {
+                padding: 1rem;
+                max-height: 85vh;
+            }
+
+            .gradient-text {
+                font-size: clamp(1.5rem, 6vw, 3rem);
+                padding: 0.5rem;
+            }
+
+            .hint {
+                font-size: 0.75rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+
+        .hint {
+            margin-top: 2rem;
+            color: #888;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            transition: color 0.4s ease;
+        }
+
+        /* Light Mode Overrides */
+        body.light-mode {
+            background-color: var(--bg-light);
+        }
+
+        body.light-mode .gradient-text {
+            background: linear-gradient(90deg, #0052d4, #6f00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: var(--glow-light);
+        }
+
+
+        body.light-mode .hint {
+            color: #666;
+        }
+
+        .confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: transparent;
+        }
+
+        .confetti-canvas.active {
+            opacity: 1;
+        }
+
+        .dimming-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        body.light-mode .dimming-overlay {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .confetti-dim {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .confetti-dim.active {
+            opacity: 1;
+        }
+
+        body.light-mode .confetti-dim {
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 1rem 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+    <div class="dimming-overlay"></div>
+    <div class="confetti-dim" id="confettiDim"></div>
+    <div class="content-wrapper">
+        <div class="text-wrapper">
+            <h1 class="gradient-text">Congratulations!</h1>
+        </div>
+        <p class="hint">Press <strong>L</strong> for Light Mode · Press <strong>D</strong> for Dark Mode</p>
+    </div>
+
+    <script>
+        // Confetti/Fireworks animation
+        (function() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let animationId;
+            let isRunning = false;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const darkColors = ['#ff1744', '#ff9100', '#ffea00', '#00e676', '#00b0ff', '#2979ff', '#d500f9', '#ff6090', '#ffffff', '#ffab40'];
+            const lightColors = ['#c62828', '#e65100', '#f9a825', '#2e7d32', '#0277bd', '#1565c0', '#6a1b9a', '#c2185b', '#424242', '#ef6c00'];
+
+            function getColors() {
+                return document.body.classList.contains('light-mode') ? lightColors : darkColors;
+            }
+
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 4;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.gravity = 0.15;
+                    this.friction = 0.98;
+                    this.alpha = 1;
+                    this.decay = Math.random() * 0.015 + 0.008;
+                    this.size = Math.random() * 12 + 6;
+                    this.color = getColors()[Math.floor(Math.random() * getColors().length)];
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = (Math.random() - 0.5) * 10;
+                    this.shape = Math.random() > 0.5 ? 'rect' : 'circle';
+                }
+
+                update() {
+                    this.vx *= this.friction;
+                    this.vy *= this.friction;
+                    this.vy += this.gravity;
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.alpha -= this.decay;
+                    this.rotation += this.rotationSpeed;
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate((this.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = this.color;
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                    ctx.shadowBlur = 4;
+                    if (this.shape === 'rect') {
+                        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.6);
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                }
+            }
+
+            function createBurst(x, y, count = 50) {
+                for (let i = 0; i < count; i++) {
+                    particles.push(new Particle(x, y));
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles = particles.filter(p => p.alpha > 0);
+
+                if (particles.length === 0) {
+                    canvas.classList.remove('active');
+                    return;
+                }
+
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function startConfetti() {
+                canvas.classList.add('active');
+                document.getElementById('confettiDim').classList.add('active');
+
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+
+                // Create initial burst immediately
+                createBurst(centerX, centerY, 80);
+
+                // Create multiple bursts for a fireworks effect
+                const bursts = 5;
+                for (let i = 0; i < bursts; i++) {
+                    setTimeout(() => {
+                        const offsetX = (Math.random() - 0.5) * canvas.width * 0.6;
+                        const offsetY = (Math.random() - 0.5) * canvas.height * 0.3;
+                        createBurst(centerX + offsetX, centerY + offsetY, 60);
+                    }, i * 200);
+                }
+
+                // Continue with random bursts
+                setTimeout(() => {
+                    for (let i = 0; i < 8; i++) {
+                        setTimeout(() => {
+                            const x = Math.random() * canvas.width;
+                            const y = Math.random() * canvas.height * 0.5;
+                            createBurst(x, y, 40);
+                        }, i * 150);
+                    }
+                }, 1000);
+
+                // Stop after a few seconds and clean up
+                setTimeout(() => {
+                    cancelAnimationFrame(animationId);
+                    setTimeout(() => {
+                        canvas.classList.remove('active');
+                        document.getElementById('confettiDim').classList.remove('active');
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        particles = [];
+                    }, 1500);
+                }, 4500);
+
+                // Start the animation loop
+                animate();
+            }
+
+            window.startConfetti = startConfetti;
+        })();
+
+        // Trigger confetti after text fade-in completes
+        setTimeout(() => {
+            window.startConfetti();
+        }, 1600);
+
+        // Restore saved theme on page load
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        })();
+
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            
+            if (key === 'l') {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else if (key === 'd') {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
