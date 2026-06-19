@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JAMESlittle — Multi-disciplinary product person at the intersection of design, strategy, and execution.">
   <title>JAMESlittle — Portfolio</title>
   <style>
     /* ===== RESET & BASE ===== */
@@ -255,8 +256,28 @@
 
     .card:hover {
       transform: scale(1.04) rotate(-1deg);
+    }
+
+    /* Tag-matched hover glow */
+    .card:has(.badge-ux):hover {
       border-color: var(--pink);
       box-shadow: 0 12px 40px rgba(255, 0, 110, 0.25);
+    }
+    .card:has(.badge-pm):hover {
+      border-color: var(--blue);
+      box-shadow: 0 12px 40px rgba(69, 143, 255, 0.25);
+    }
+    .card:has(.badge-dx):hover {
+      border-color: var(--purple);
+      box-shadow: 0 12px 40px rgba(168, 85, 247, 0.25);
+    }
+    .card:has(.badge-strategy):hover {
+      border-color: var(--yellow);
+      box-shadow: 0 12px 40px rgba(250, 204, 21, 0.25);
+    }
+    .card:has(.badge-other):hover {
+      border-color: var(--lime);
+      box-shadow: 0 12px 40px rgba(132, 204, 22, 0.25);
     }
 
     .card-badge {
@@ -285,7 +306,7 @@
 
     .card-desc {
       font-size: 0.95rem;
-      color: rgba(250, 250, 250, 0.65);
+      color: rgba(250, 250, 250, 0.85);
       line-height: 1.6;
     }
 
@@ -339,7 +360,7 @@
     }
 
     .footer-signoff {
-      color: rgba(250, 250, 250, 0.4);
+      color: rgba(250, 250, 250, 0.65);
       font-size: 0.9rem;
     }
 
@@ -373,6 +394,20 @@
         gap: 1rem;
       }
     }
+
+    /* ===== REDUCED MOTION ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
     /* ===== CONFETTI ===== */
     .confetti-piece {
       position: fixed;
@@ -399,9 +434,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Confetti Canvas -->
-  <canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
   <!-- ===== HERO ===== -->
   <header class="hero">
@@ -547,9 +579,9 @@
     <h3 class="footer-title">Let's Make Something Great</h3>
     <div class="footer-links">
       <a href="mailto:your.email@example.com">📧 your.email@example.com</a>
-      <a href="#">💼 LinkedIn</a>
-      <a href="#">🐙 GitHub</a>
-      <a href="#">🐦 Twitter</a>
+      <a href="https://linkedin.com/in/YOUR_USERNAME" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a>
+      <a href="https://github.com/YOUR_USERNAME" target="_blank" rel="noopener noreferrer">🐙 GitHub</a>
+      <a href="https://twitter.com/YOUR_USERNAME" target="_blank" rel="noopener noreferrer">🐦 Twitter</a>
     </div>
     <p class="footer-signoff">Built with caffeine, curiosity, and zero JavaScript frameworks ✌️</p>
   </footer>
@@ -651,10 +683,12 @@
         });
       }
 
-      // Trigger fireworks show on page load
-      window.addEventListener('load', () => {
-        setTimeout(fireworksShow, 400);
-      });
+      // Trigger fireworks show on page load (respect reduced-motion preference)
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.addEventListener('load', () => {
+          setTimeout(fireworksShow, 400);
+        });
+      }
     })();
   </script>
 
