@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen Coder - Portfolio</title>
+    <style>
+        /* High contrast color scheme */
+        :root {
+            --primary: #ff00ff;
+            --secondary: #00ffff;
+            --accent: #ffff00;
+            --background: #000000;
+            --text: #ffffff;
+            --card-bg: #330033;
+            --filter-bg: #660066;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 20%);
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 4px solid var(--primary);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 
+                0 0 10px var(--primary),
+                0 0 20px var(--secondary),
+                0 0 30px var(--accent);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 5px var(--primary); }
+            50% { text-shadow: 0 0 20px var(--primary), 0 0 30px var(--secondary); }
+            100% { text-shadow: 0 0 5px var(--primary); }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--filter-bg);
+            border-radius: 15px;
+            border: 3px solid var(--accent);
+        }
+        
+        .filter-btn {
+            background-color: var(--primary);
+            color: var(--background);
+            border: none;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 0 var(--secondary);
+        }
+        
+        .filter-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--accent);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--accent);
+            color: var(--background);
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+        
+        .project-card {
+            background-color: var(--card-bg);
+            border: 4px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                0 10px 25px rgba(255, 0, 255, 0.5),
+                0 0 30px var(--secondary);
+            border-color: var(--accent);
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+        
+        .project-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            text-align: center;
+        }
+        
+        .project-type {
+            background-color: var(--accent);
+            color: var(--background);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        
+        .project-description {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+        
+        .tag {
+            background-color: var(--primary);
+            color: var(--background);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 30px;
+            border-top: 4px solid var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-btn {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Qwen Coder Portfolio</h1>
+        <p class="subtitle">Where creativity meets code</p>
+    </header>
+    
+    <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="ux">UX Design</button>
+        <button class="filter-btn" data-filter="manager">Project Manager</button>
+        <button class="filter-btn" data-filter="digital">Digital Experience</button>
+        <button class="filter-btn" data-filter="web">Web Development</button>
+        <button class="filter-btn" data-filter="ai">AI Integration</button>
+    </div>
+    
+    <div class="projects-grid" id="projectsContainer">
+        <!-- Project cards will be generated here -->
+    </div>
+    
+    <footer>
+        <p>Made with ❤️ and lots of ☕ | Qwen Coder Portfolio</p>
+    </footer>
+
+    <script>
+        // Project data
+        const projects = [
+            {
+                id: 1,
+                title: "Neon Dashboard",
+                type: "digital",
+                description: "A vibrant dashboard with neon aesthetics for real-time analytics. Features interactive charts and live data visualization.",
+                tags: ["React", "D3.js", "WebGL"],
+                icon: "📊"
+            },
+            {
+                id: 2,
+                title: "UX Workshop App",
+                type: "ux",
+                description: "Interactive platform for conducting UX research workshops. Includes collaborative tools and real-time feedback.",
+                tags: ["Figma", "User Testing", "Prototyping"],
+                icon: "🎯"
+            },
+            {
+                id: 3,
+                title: "Project Tracker Pro",
+                type: "manager",
+                description: "Advanced project management solution with timeline visualization and resource allocation tools.",
+                tags: ["Agile", "Scrum", "Kanban"],
+                icon: "📋"
+            },
+            {
+                id: 4,
+                title: "AI Chat Interface",
+                type: "ai",
+                description: "Natural language interface for AI-powered customer support with sentiment analysis and context awareness.",
+                tags: ["NLP", "Chatbots", "Machine Learning"],
+                icon: "🤖"
+            },
+            {
+                id: 5,
+                title: "E-commerce Redesign",
+                type: "ux",
+                description: "Complete UX overhaul for an e-commerce platform with improved conversion rates and user engagement.",
+                tags: ["User Research", "Wireframing", "Prototyping"],
+                icon: "🛍️"
+            },
+            {
+                id: 6,
+                title: "Mobile Banking App",
+                type: "digital",
+                description: "Secure mobile banking experience with biometric authentication and financial insights dashboard.",
+                tags: ["iOS", "Android", "Security"],
+                icon: "📱"
+            },
+            {
+                id: 7,
+                title: "Team Collaboration Hub",
+                type: "manager",
+                description: "Centralized platform for team communication, task management, and project tracking with real-time updates.",
+                tags: ["Slack", "Trello", "Confluence"],
+                icon: "👥"
+            },
+            {
+                id: 8,
+                title: "Data Visualization Tool",
+                type: "web",
+                description: "Interactive data visualization platform that transforms complex datasets into engaging charts and graphs.",
+                tags: ["D3.js", "React", "WebGL"],
+                icon: "📈"
+            },
+            {
+                id: 9,
+                title: "Voice Assistant Integration",
+                type: "ai",
+                description: "Voice-controlled interface for smart home devices with natural language processing capabilities.",
+                tags: ["Speech Recognition", "IoT", "API Integration"],
+                icon: "🔊"
+            },
+            {
+                id: 10,
+                title: "Design System Framework",
+                type: "digital",
+                description: "Comprehensive design system with component library and style guide for consistent UI development.",
+                tags: ["Figma", "Component Design", "Design Tokens"],
+                icon: "🎨"
+            },
+            {
+                id: 11,
+                title: "Product Launch Campaign",
+                type: "manager",
+                description: "End-to-end campaign management for product launches with analytics and performance tracking.",
+                tags: ["Marketing", "Analytics", "Strategy"],
+                icon: "🚀"
+            },
+            {
+                id: 12,
+                title: "Accessibility Audit Tool",
+                type: "ux",
+                description: "Automated tool for auditing web accessibility compliance with detailed reports and recommendations.",
+                tags: ["WCAG", "Testing", "Compliance"],
+                icon: "♿"
+            }
+        ];
+
+        // DOM elements
+        const projectsContainer = document.getElementById('projectsContainer');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        // Function to render projects
+        function renderProjects(filter = 'all') {
+            // Clear container
+            projectsContainer.innerHTML = '';
+            
+            // Filter projects
+            const filteredProjects = filter === 'all' 
+                ? projects 
+                : projects.filter(project => project.type === filter);
+            
+            if (filteredProjects.length === 0) {
+                projectsContainer.innerHTML = '<div class="no-results">No projects found for this category</div>';
+                return;
+            }
+            
+            // Render each project
+            filteredProjects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.innerHTML = `
+                    <div class="project-icon">${project.icon}</div>
+                    <h3 class="project-title">${project.title}</h3>
+                    <span class="project-type">${project.type.charAt(0).toUpperCase() + project.type.slice(1)}</span>
+                    <p class="project-description">${project.description}</p>
+                    <div class="project-tags">
+                        ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                `;
+                projectsContainer.appendChild(projectCard);
+            });
+        }
+
+        // Filter functionality
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Get filter value
+                const filter = button.getAttribute('data-filter');
+                
+                // Render projects with selected filter
+                renderProjects(filter);
+            });
+        });
+
+        // Initial render
+        renderProjects();
+    </script>
+</body>
+</html>

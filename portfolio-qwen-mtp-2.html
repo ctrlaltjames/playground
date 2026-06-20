@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Quirky & Bold</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    :root {
+      --neon-pink: #ff2d95;
+      --electric-blue: #00d4ff;
+      --lime-green: #b8ff00;
+      --sunny-yellow: #ffe600;
+      --hot-orange: #ff6a00;
+      --deep-purple: #7b2dff;
+      --white: #ffffff;
+      --off-black: #1a1a2e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--off-black);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* Quirky animated background blobs */
+    .bg-blobs {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: floatBlob 20s infinite ease-in-out;
+    }
+
+    .blob:nth-child(1) { width: 500px; height: 500px; background: var(--neon-pink); top: -10%; left: -5%; animation-delay: 0s; }
+    .blob:nth-child(2) { width: 400px; height: 400px; background: var(--electric-blue); top: 50%; right: -5%; animation-delay: -5s; }
+    .blob:nth-child(3) { width: 350px; height: 350px; background: var(--lime-green); bottom: -10%; left: 30%; animation-delay: -10s; }
+    .blob:nth-child(4) { width: 300px; height: 300px; background: var(--sunny-yellow); top: 20%; left: 50%; animation-delay: -15s; }
+
+    @keyframes floatBlob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -80px) scale(1.1); }
+      50% { transform: translate(-30px, 60px) scale(0.9); }
+      75% { transform: translate(70px, 40px) scale(1.05); }
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 80px 20px 40px;
+      position: relative;
+    }
+
+    .avatar-wrapper {
+      display: inline-block;
+      margin-bottom: 30px;
+      animation: wobble 3s infinite ease-in-out;
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(3deg) scale(1.02); }
+      75% { transform: rotate(-3deg) scale(0.98); }
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      background: linear-gradient(135deg, var(--neon-pink), var(--electric-blue), var(--lime-green));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      animation: morphBlob 8s infinite ease-in-out;
+      box-shadow: 0 0 40px rgba(255, 45, 149, 0.5);
+    }
+
+    @keyframes morphBlob {
+      0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+      25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+      50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+      75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon-pink), var(--sunny-yellow), var(--lime-green), var(--electric-blue));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: rainbowText 4s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes rainbowText {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    .tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--lime-green);
+      opacity: 0.9;
+    }
+
+    .tagline span {
+      display: inline-block;
+      animation: bounce 2s infinite;
+    }
+
+    .tagline span:nth-child(2) { animation-delay: 0.1s; color: var(--electric-blue); }
+    .tagline span:nth-child(3) { animation-delay: 0.2s; color: var(--sunny-yellow); }
+    .tagline span:nth-child(4) { animation-delay: 0.3s; color: var(--neon-pink); }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Marquee divider */
+    .marquee-divider {
+      overflow: hidden;
+      white-space: nowrap;
+      background: var(--neon-pink);
+      padding: 12px 0;
+      margin: 40px 0;
+      transform: rotate(-1deg) scale(1.02);
+    }
+
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 15s linear infinite;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--off-black);
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Filter buttons */
+    .filter-section {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .filter-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: var(--sunny-yellow);
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .filter-btn {
+      padding: 12px 28px;
+      border: 3px solid var(--white);
+      background: transparent;
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .filter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, var(--neon-pink), var(--electric-blue));
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .filter-btn:hover::before,
+    .filter-btn.active::before {
+      left: 0;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      border-color: var(--neon-pink);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(255, 45, 149, 0.4);
+    }
+
+    .filter-btn.active {
+      border-color: var(--lime-green);
+    }
+
+    /* Project cards grid */
+    .projects-section {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    /* Individual card */
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 30px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      animation: cardAppear 0.5s ease-out;
+    }
+
+    @keyframes cardAppear {
+      from { opacity: 0; transform: translateY(40px) scale(0.9); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: conic-gradient(from 0deg, var(--neon-pink), var(--electric-blue), var(--lime-green), var(--sunny-yellow), var(--neon-pink));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+      animation: rotateBorder 4s linear infinite;
+    }
+
+    @keyframes rotateBorder {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .project-card:hover::before {
+      opacity: 0.3;
+    }
+
+    .project-card:hover {
+      transform: translateY(-12px) rotate(1deg) scale(1.03);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      border-color: var(--neon-pink);
+    }
+
+    .project-card.hidden {
+      display: none;
+    }
+
+    .card-emoji {
+      font-size: 50px;
+      margin-bottom: 15px;
+      display: inline-block;
+      animation: emojiDance 2s infinite ease-in-out;
+    }
+
+    @keyframes emojiDance {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(10deg) scale(1.1); }
+      75% { transform: rotate(-10deg) scale(0.9); }
+    }
+
+    .card-type-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .badge-ux { background: var(--neon-pink); color: var(--white); }
+    .badge-manager { background: var(--electric-blue); color: var(--off-black); }
+    .badge-digital { background: var(--lime-green); color: var(--off-black); }
+    .badge-strategy { background: var(--sunny-yellow); color: var(--off-black); }
+    .badge-design { background: var(--deep-purple); color: var(--white); }
+
+    .project-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .project-card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 20px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: var(--lime-green);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, var(--neon-pink), var(--hot-orange));
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .card-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(255, 45, 149, 0.5);
+    }
+
+    /* Quirky floating shapes */
+    .floating-shapes {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.15;
+      animation: floatShape 25s infinite ease-in-out;
+    }
+
+    .shape:nth-child(1) { top: 10%; left: 5%; font-size: 40px; animation-delay: 0s; }
+    .shape:nth-child(2) { top: 60%; right: 8%; font-size: 35px; animation-delay: -7s; }
+    .shape:nth-child(3) { bottom: 15%; left: 15%; font-size: 45px; animation-delay: -14s; }
+    .shape:nth-child(4) { top: 30%; right: 20%; font-size: 30px; animation-delay: -21s; }
+
+    @keyframes floatShape {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(30px, -50px) rotate(120deg); }
+      66% { transform: translate(-20px, 40px) rotate(240deg); }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 2px solid var(--neon-pink);
+    }
+
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 15px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px) rotate(10deg);
+      box-shadow: 0 10px 30px rgba(255, 45, 149, 0.4);
+      border-color: var(--neon-pink);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 60px 15px 30px;
+      }
+
+      .filter-buttons {
+        gap: 10px;
+      }
+
+      .filter-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Scroll reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease-out;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Easter egg - Konami code hint */
+    .easter-egg-hint {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: var(--deep-purple);
+      color: var(--white);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+    }
+
+    .easter-egg-hint:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background blobs -->
+  <div class="bg-blobs">
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+  </div>
+
+  <!-- Floating shapes -->
+  <div class="floating-shapes">
+    <div class="shape">✦</div>
+    <div class="shape">◆</div>
+    <div class="shape">●</div>
+    <div class="shape">▲</div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="avatar-wrapper">
+      <div class="avatar">👩‍💻</div>
+    </div>
+    <h1>Alex Morgan</h1>
+    <p class="tagline">
+      <span>UX</span>
+      <span>|</span>
+      <span>Product</span>
+      <span>|</span>
+      <span>Digital Crafts</span>
+    </p>
+  </header>
+
+  <!-- Marquee divider -->
+  <div class="marquee-divider">
+    <div class="marquee-content">
+      ✦ DESIGNING EXPERIENCES THAT MATTER ✦ LEADING TEAMS TO SUCCESS ✦ CRAFTING DIGITAL MAGIC ✦ TURNING COMPLEXITY INTO SIMPLICITY ✦ 
+      DESIGNING EXPERIENCES THAT MATTER ✦ LEADING TEAMS TO SUCCESS ✦ CRAFTING DIGITAL MAGIC ✦ TURNING COMPLEXITY INTO SIMPLICITY ✦
+    </div>
+  </div>
+
+  <!-- Filter section -->
+  <section class="filter-section">
+    <h2>🔥 Featured Work</h2>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">All Projects ✨</button>
+      <button class="filter-btn" data-filter="ux">UX Design 🎨</button>
+      <button class="filter-btn" data-filter="manager">Product Mgmt 🚀</button>
+      <button class="filter-btn" data-filter="digital">Digital Experience 💻</button>
+      <button class="filter-btn" data-filter="strategy">Strategy 🧠</button>
+      <button class="filter-btn" data-filter="design">Visual Design 🎭</button>
+    </div>
+  </section>
+
+  <!-- Projects grid -->
+  <section class="projects-section">
+    <div class="projects-grid">
+      
+      <!-- Card 1 -->
+      <article class="project-card reveal" data-type="ux">
+        <div class="card-emoji">🎯</div>
+        <span class="card-type-badge badge-ux">UX Design</span>
+        <h3>E-Commerce Redesign</h3>
+        <p>Led a complete UX overhaul for a major retail platform, increasing conversion by 35% and reducing cart abandonment by 28%.</p>
+        <div class="card-tags">
+          <span class="tag">User Research</span>
+          <span class="tag">Wireframing</span>
+          <span class="tag">Prototyping</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="project-card reveal" data-type="manager">
+        <div class="card-emoji">📊</div>
+        <span class="card-type-badge badge-manager">Product Mgmt</span>
+        <h3>SaaS Analytics Dashboard</h3>
+        <p>Managed a cross-functional team of 12 to deliver an analytics platform serving 50K+ daily active users.</p>
+        <div class="card-tags">
+          <span class="tag">Agile</span>
+          <span class="tag">Roadmapping</span>
+          <span class="tag">Stakeholder Mgmt</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="project-card reveal" data-type="digital">
+        <div class="card-emoji">🌐</div>
+        <span class="card-type-badge badge-digital">Digital Experience</span>
+        <h3>Interactive Web Experience</h3>
+        <p>Crafted an award-winning immersive web experience for a tech startup's product launch, generating 100K+ engagements in week one.</p>
+        <div class="card-tags">
+          <span class="tag">WebGL</span>
+          <span class="tag">Animation</span>
+          <span class="tag">Responsive</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="project-card reveal" data-type="strategy">
+        <div class="card-emoji">🧩</div>
+        <span class="card-type-badge badge-strategy">Strategy</span>
+        <h3>Digital Transformation Roadmap</h3>
+        <p>Developed a 3-year digital strategy for a Fortune 500 company, aligning tech initiatives with business objectives.</p>
+        <div class="card-tags">
+          <span class="tag">Vision</span>
+          <span class="tag">Planning</span>
+          <span class="tag">Change Mgmt</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="project-card reveal" data-type="design">
+        <div class="card-emoji">🎨</div>
+        <span class="card-type-badge badge-design">Visual Design</span>
+        <h3>Brand Identity System</h3>
+        <p>Created a comprehensive design system and brand identity for a fintech startup, from logo to full UI component library.</p>
+        <div class="card-tags">
+          <span class="tag">Design System</span>
+          <span class="tag">Branding</span>
+          <span class="tag">Figma</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="project-card reveal" data-type="ux">
+        <div class="card-emoji">📱</div>
+        <span class="card-type-badge badge-ux">UX Design</span>
+        <h3>Healthcare Mobile App</h3>
+        <p>Designed an intuitive mobile health tracking app with accessibility at its core, achieving a 4.8-star rating on app stores.</p>
+        <div class="card-tags">
+          <span class="tag">Mobile UX</span>
+          <span class="tag">Accessibility</span>
+          <span class="tag">User Testing</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="project-card reveal" data-type="manager">
+        <div class="card-emoji">🏗️</div>
+        <span class="card-type-badge badge-manager">Product Mgmt</span>
+        <h3>Platform Migration Project</h3>
+        <p>Orchestrated the migration of a legacy system to a modern cloud platform with zero downtime and 100% data integrity.</p>
+        <div class="card-tags">
+          <span class="tag">Leadership</span>
+          <span class="tag">Risk Mgmt</span>
+          <span class="tag">Cloud</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="project-card reveal" data-type="digital">
+        <div class="card-emoji">🎮</div>
+        <span class="card-type-badge badge-digital">Digital Experience</span>
+        <h3>Gamified Learning Platform</h3>
+        <p>Built an interactive learning experience with gamification elements, boosting user engagement by 150% and completion rates by 80%.</p>
+        <div class="card-tags">
+          <span class="tag">Gamification</span>
+          <span class="tag">Interaction Design</span>
+          <span class="tag">Frontend</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+      <!-- Card 9 -->
+      <article class="project-card reveal" data-type="strategy">
+        <div class="card-emoji">📈</div>
+        <span class="card-type-badge badge-strategy">Strategy</span>
+        <h3>Growth Strategy Framework</h3>
+        <p>Designed a data-driven growth framework that helped a Series B startup achieve 3x year-over-year revenue growth.</p>
+        <div class="card-tags">
+          <span class="tag">Analytics</span>
+          <span class="tag">Growth Hacking</span>
+          <span class="tag">KPI Design</span>
+        </div>
+        <a href="#" class="card-link">View Case Study →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-text">© 2025 Alex Morgan — Built with 💜 and way too much CSS</p>
+    <div class="social-links">
+      <a href="#" class="social-link" title="LinkedIn">💼</a>
+      <a href="#" class="social-link" title="Twitter">🐦</a>
+      <a href="#" class="social-link" title="GitHub">💻</a>
+      <a href="#" class="social-link" title="Dribbble">🏀</a>
+    </div>
+  </footer>
+
+  <!-- Easter egg hint -->
+  <div class="easter-egg-hint">↑ try the konami code!</div>
+
+  <script>
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active button
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+
+        projectCards.forEach((card, index) => {
+          if (filter === 'all' || card.dataset.type === filter) {
+            card.classList.remove('hidden');
+            card.style.animation = `cardAppear 0.5s ease-out ${index * 0.05}s both`;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Scroll reveal
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // 3D tilt effect on cards
+    projectCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.03)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+      });
+    });
+
+    // Konami code easter egg
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          activateEasterEgg();
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    });
+
+    function activateEasterEgg() {
+      document.body.style.animation = 'none';
+      document.querySelectorAll('.blob').forEach(blob => {
+        blob.style.animation = 'floatBlob 2s infinite ease-in-out';
+      });
+      
+      // Confetti effect
+      for (let i = 0; i < 50; i++) {
+        createConfetti();
+      }
+      
+      alert('🎉 You found the easter egg! You\'re awesome!');
+    }
+
+    function createConfetti() {
+      const confetti = document.createElement('div');
+      confetti.style.position = 'fixed';
+      confetti.style.top = '-10px';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.width = '10px';
+      confetti.style.height = '10px';
+      confetti.style.backgroundColor = ['#ff2d95', '#00d4ff', '#b8ff00', '#ffe600', '#ff6a00', '#7b2dff'][Math.floor(Math.random() * 6)];
+      confetti.style.zIndex = '10000';
+      confetti.style.pointerEvents = 'none';
+      document.body.appendChild(confetti);
+
+      const animation = confetti.animate([
+        { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+        { transform: `translateY(100vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+      ], {
+        duration: 3000 + Math.random() * 2000,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      });
+
+      animation.onfinish = () => confetti.remove();
+    }
+
+    // Random emoji change on avatar click
+    const emojis = ['👩‍💻', '🧙‍♀️', '🦄', '🌈', '🚀', '💎', '🎯', '⚡'];
+    let emojiIndex = 0;
+    document.querySelector('.avatar').addEventListener('click', () => {
+      emojiIndex = (emojiIndex + 1) % emojis.length;
+      document.querySelector('.avatar').textContent = emojis[emojiIndex];
+    });
+
+    // Console easter egg
+    console.log('%c🎉 Hey there, curious coder!', 'font-size: 20px; font-weight: bold; color: #ff2d95;');
+    console.log('%cWelcome to my portfolio! Feel free to explore.', 'font-size: 14px; color: #00d4ff;');
+    console.log('%cPsst... try the Konami code ↑↑↓↓←→←→BA', 'font-size: 12px; color: #b8ff00;');
+  </script>
+</body>
+</html>
